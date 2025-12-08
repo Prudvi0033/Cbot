@@ -1,6 +1,7 @@
 import { model, Schema } from "mongoose";
+import type { Product_Interface } from "../types/types";
 
-const productSchema = new Schema({
+const productSchema = new Schema<Product_Interface>({
     name: {
         type: String,
         required: true

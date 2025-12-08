@@ -1,6 +1,7 @@
 import { model, Schema, Types } from "mongoose";
+import type { Payment_Interface } from "../types/types";
 
-const paymentSchema = new Schema({
+const paymentSchema = new Schema<Payment_Interface>({
   userId: {
     type: Types.ObjectId,
     ref: "User",

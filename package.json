@@ -8,13 +8,16 @@
     "start": "bun src/index.ts"
   },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "@types/jsonwebtoken": "^9.0.10"
   },
   "peerDependencies": {
     "typescript": "^5"
   },
   "dependencies": {
+    "bcryptjs": "^3.0.3",
     "hono": "^4.10.7",
+    "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.0.1"
   }
 }
