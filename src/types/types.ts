@@ -16,7 +16,6 @@ export interface Order_Interface {
 export interface Payment_Interface {
     userId: Types.ObjectId,
     orderId: Types.ObjectId,
-    paymentMethod: string,
     amountPaid: number,
     pendingAmount: number,
     status: string,

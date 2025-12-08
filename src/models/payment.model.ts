@@ -11,17 +11,12 @@ const paymentSchema = new Schema<Payment_Interface>({
     ref: "Order",
   },
 
-  paymentMethod: {
-    type: String,
-    enum: ['PAY_NOW', 'PAY_ON_DELIVERY'],
-  },
-
   amountPaid: { type: Number, required: true },
   pendingAmount: { type: Number, required: true },
 
   status: {
     type: String,
-    enum: ["Paid", "Pending"],
+    enum: ["PAID", "PENDING"],
     default: "Pending",
   },
 

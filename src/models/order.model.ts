@@ -1,6 +1,7 @@
 import { model, Schema, Types } from "mongoose";
 import type { Order_Interface } from "../types/types";
 
+
 const orderSchema = new Schema<Order_Interface>({
     userId: {
         type: Types.ObjectId,
