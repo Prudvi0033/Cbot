@@ -3,6 +3,7 @@ import { parseNlp } from "../lib/nlp";
 import Product from "../models/product.model";
 import Payment from "../models/payment.model";
 import Deal from "../models/deal.model";
+import Order from "../models/order.model";
 
 export const getUserRequest = async (c: Context) => {
   try {
@@ -44,10 +45,39 @@ export const getUserRequest = async (c: Context) => {
       }
     }
 
+    if (intent === "orders") {
+      try {
+        const orders = await Order.find({ userId });
+
+        if (orders.length === 0) {
+          return c.json({ data: "No orders found." }, 404);
+        }
+
+        const enrichedOrders = await Promise.all(
+          orders.map(async (order) => {
+            const product = await Product.findById(order.productId);
+            return {
+              userId,
+              name: product?.name || "Unknown product",
+              category: product?.category || "Unknown category",
+              price: product?.price || 0,
+              imageUrl: product?.imageUrl || "",
+              status: order.status,
+              createdAt: order.createdAt,
+            };
+          })
+        );
+
+        return c.json({ data: enrichedOrders });
+      } catch (error) {
+        console.log("Error fetching orders:", error);
+        return c.json({ error: "Failed to fetch orders" }, 500);
+      }
+    }
+
     if (intent === "deals") {
       try {
         const deals = await Deal.aggregate([
-          { $sample: { size: 3 } },
           {
             $lookup: {
               from: "products",
@@ -62,7 +92,7 @@ export const getUserRequest = async (c: Context) => {
               ...(category ? { "product.category": category } : {}),
               ...(minPrice !== null || maxPrice !== null
                 ? {
-                    "product.price": {
+                    dealPrice: {
                       ...(minPrice !== null ? { $gte: minPrice } : {}),
                       ...(maxPrice !== null ? { $lte: maxPrice } : {}),
                     },
@@ -81,6 +111,7 @@ export const getUserRequest = async (c: Context) => {
               createdAt: "$createdAt",
             },
           },
+          { $limit: 3 },
         ]);
 
         if (deals.length === 0) {

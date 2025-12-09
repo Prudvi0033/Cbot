@@ -1,15 +1,37 @@
 export const parseNlp = (text: string) => {
   const q = text.toLowerCase();
 
-  let intent: "products" | "deals" | "payments" | "polite" | "unknown" = "unknown";
+  let intent: "products" | "deals" | "payments" | "orders" | "polite" | "unknown" =
+    "unknown";
 
+  // --- Intent Detection ---
   // polite first
-  if (q.includes("thank") || q.includes("thanks") || q.includes("thx") || q.includes("welcome")) {
+  if (
+    q.includes("thank") ||
+    q.includes("thanks") ||
+    q.includes("thx") ||
+    q.includes("welcome")
+  ) {
     intent = "polite";
-  } 
+  }
+
+  // orders (strong keywords)
+  else if (
+    q.includes("order") ||
+    q.includes("orders") ||
+    q.includes("track") ||
+    q.includes("tracking") ||
+    q.includes("delivery") ||
+    q.includes("status") ||
+    q.includes("where is my")
+  ) {
+    intent = "orders";
+  }
+
   else if (q.includes("deal") || q.includes("discount") || q.includes("offer")) {
     intent = "deals";
-  } 
+  }
+
   else if (
     q.includes("payment") ||
     q.includes("pending") ||
@@ -17,12 +39,13 @@ export const parseNlp = (text: string) => {
     q.includes("pay")
   ) {
     intent = "payments";
-  } 
+  }
+
   else {
     intent = "products";
   }
 
-  // rest of your NLP parsing: price, category, etc.
+  // --- Price Extraction ---
   const hasAbove = q.includes("above") || q.includes("greater") || q.includes("more");
   const hasBelow = q.includes("below") || q.includes("under") || q.includes("less");
 
@@ -54,15 +77,16 @@ export const parseNlp = (text: string) => {
     maxPrice = numbers[0] ?? null;
   }
 
+  // --- Category Extraction ---
   const categoryKeywords: Record<string, string[]> = {
     "Beauty & Personal Care": ["beauty", "personal care", "care"],
     "Books & Learning": ["book", "books", "learning"],
-    "Electronics": ["electronics", "electronic"],
-    "Fashion": ["fashion", "clothes", "dress", "shirts"],
+    Electronics: ["electronics", "electronic"],
+    Fashion: ["fashion", "clothes", "dress", "shirts"],
     "Fitness & Outdoors": ["fitness", "outdoors", "gym"],
     "Home & Kitchen": ["home", "kitchen"],
-    "Laptops": ["laptop", "laptops"],
-    "Mobiles": ["mobile", "mobiles", "phone", "phones"],
+    Laptops: ["laptop", "laptops"],
+    Mobiles: ["mobile", "mobiles", "phone", "phones"],
     "Sports & Outdoors": ["sports", "sport", "outdoor"],
   };
 
