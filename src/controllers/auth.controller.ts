@@ -68,3 +68,21 @@ export const login = async (c: Context) => {
         return c.json({ msg: "Login failed" }, 500);
     }
 };
+
+export const profile = async (c: Context) => {
+    try {
+        const userId = c.get('userId')
+        const user = await User.findById(userId)
+
+        if(!user){
+            return c.json("Unexisting user")
+        }
+
+        return c.json({
+            name: user?.name
+        })
+    } catch (error) {
+        console.log("Error in getting user name");
+        c.json("Error in getting user name")
+    }
+}

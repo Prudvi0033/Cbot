@@ -8,7 +8,7 @@ export const getPaymentDetails = async (c: Context) => {
             userId: userId
         })
 
-        return c.json(payments)
+        return c.json({data: payments})
     } catch (error) {
         console.log("Error in getting payments");
         c.json("Error in getting payments")

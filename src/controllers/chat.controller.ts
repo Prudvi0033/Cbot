@@ -15,7 +15,7 @@ export const getUserRequest = async (c: Context) => {
         const products = await Product.aggregate([
           {
             $match: {
-              category,
+              ...(category ? { category } : {}),
               ...(minPrice !== null || maxPrice !== null
                 ? {
                     price: {
@@ -28,7 +28,16 @@ export const getUserRequest = async (c: Context) => {
           },
         ]);
 
-        return c.json(products);
+        if (products.length === 0) {
+          return c.json(
+            { data: "No prodcuts found for this category/price" },
+            404
+          );
+        }
+
+        return c.json({
+          data: products,
+        });
       } catch (error) {
         console.log(error);
         return c.json({ error: "Failed to fetch products" }, 500);
@@ -69,18 +78,20 @@ export const getUserRequest = async (c: Context) => {
               price: "$product.price",
               imageUrl: "$product.imageUrl",
               dealPrice: 1,
-              dealCreatedAt: "$createdAt",
+              createdAt: "$createdAt",
             },
           },
         ]);
 
         if (deals.length === 0) {
-          return c.json({ msg: "No deals found for this category/price" }, 404);
+          return c.json(
+            { data: "No deals found for this category/price" },
+            404
+          );
         }
 
         return c.json({
-          msg: "Deals",
-          deals,
+          data: deals,
         });
       } catch (error) {
         console.log("Error fetching deals:", error);
@@ -91,20 +102,29 @@ export const getUserRequest = async (c: Context) => {
     if (intent === "payments") {
       try {
         const payments = await Payment.find({ userId });
-        return c.json(payments);
+
+        if (payments.length === 0) {
+          return c.json({ data: "No payments found." }, 404);
+        }
+
+        return c.json({
+          data: payments,
+        });
       } catch (error) {
         console.log(error);
         return c.json({ error: "Failed to fetch payments" }, 500);
       }
     }
 
-    if(intent === "polite") {
-        return c.json({
-            msg: "You're welcome! I'm here to help if you need anything else."
-        })
+    if (intent === "polite") {
+      return c.json({
+        data: "You're welcome! I'm here to help if you need anything else.",
+      });
     }
 
-    return c.json("No details related to what you are looking for.");
+    return c.json({
+      data: "No details related to what you are looking for.",
+    });
   } catch (error) {
     console.log("Error in getting chat message", error);
     return c.json("Error in getting chat message");

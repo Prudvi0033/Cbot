@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
+    "cbot": ".",
     "hono": "^4.10.7",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.0.1"

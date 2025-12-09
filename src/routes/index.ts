@@ -11,7 +11,7 @@ const rootRouter = new Hono()
 rootRouter.route("/deals", dealRouter)
 rootRouter.route("/auth", authRotuer)
 rootRouter.route("/orders", orderRouter)
-rootRouter.route("payments", paymentRouter)
+rootRouter.route("/payments", paymentRouter)
 rootRouter.route("/chat", chatRouter)
 rootRouter.route("/other", otherRouter)
 
