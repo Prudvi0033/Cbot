@@ -6,7 +6,7 @@ import {cors} from 'hono/cors'
 const app = new Hono() 
 
 app.use("*", cors({
-    origin: ['http://localhost:3000', 'https://cbot-client.vercel.app/'],
+    origin: ['http://localhost:3000', 'https://cbot-client.vercel.app'],
     credentials: true,
     allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
 }))
