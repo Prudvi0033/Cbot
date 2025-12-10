@@ -158,6 +158,6 @@ export const getUserRequest = async (c: Context) => {
     });
   } catch (error) {
     console.log("Error in getting chat message", error);
-    return c.json("Error in getting chat message");
+    return c.json({"Error in getting chat message": error});
   }
 };

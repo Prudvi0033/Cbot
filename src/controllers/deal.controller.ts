@@ -6,7 +6,7 @@ export const getDeals = async (c: Context) => {
     try {
         const deals = await Deal.aggregate([{$sample: {size: 3}}])
         
-        const prodcuts = await Promise.all(
+        const products = await Promise.all(
             deals.map(async (deal) => {
                 const product = await Product.findById(deal.productId);
 
@@ -24,8 +24,7 @@ export const getDeals = async (c: Context) => {
         )
 
         return c.json({
-            msg: "Deals",
-            prodcuts
+            data: products
         })
     } catch (error) {
         console.log("error getting deals",error);

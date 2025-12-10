@@ -15,7 +15,7 @@ export const getCategories = async (c: Context) => {
     return c.json(
       {
         msg: "Categories",
-        categories,
+        data: categories,
       },
       200
     );
@@ -132,14 +132,14 @@ export const getOrders = async (c: Context) => {
           category: product?.category,
           price: product?.price,
           imageUrl: product?.imageUrl,
-          staus: order.status,
+          status: order.status,
         };
       })
     );
 
     return c.json({
         msg: "User orders",
-        orders: products
+        data: products
     });
   } catch (error) {
     console.log("Error in getting orders");
