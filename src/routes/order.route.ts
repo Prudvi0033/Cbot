@@ -7,9 +7,11 @@ const orderRouter = new Hono()
 orderRouter.get("/categories", getCategories)
 orderRouter.get("/category-products", getProductsByCategory)
 
-orderRouter.use(authMiddleware)
+const protectedOrderRouter = new Hono()
+protectedOrderRouter.use(authMiddleware)
+protectedOrderRouter.post("/create", createOrder)
+protectedOrderRouter.get("/user", getOrders)
 
-orderRouter.post("/create", createOrder)
-orderRouter.get("/user", getOrders)
+orderRouter.route("", protectedOrderRouter)
 
 export default orderRouter

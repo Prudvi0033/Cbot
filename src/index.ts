@@ -3,26 +3,23 @@ import { connectDB } from "./lib/db";
 import rootRouter from "./routes";
 import {cors} from 'hono/cors'
 
-const router = new Hono() 
+const app = new Hono() 
 
-router.options("*", (c) => c.body(null, 204))
-
-router.use("*", cors({
-    origin: ['http://localhost:3000', 'https://cbot-client.vercel.app'],
+app.use(cors({
+    origin: "*",
     credentials: true,
-    allowHeaders: ["Content-Type", "Authorization"],
     allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
 }))
 
-router.get("/", (c: Context) => {
+app.get("/", (c: Context) => {
     return c.text('hello')
 })
 
-router.route("/api", rootRouter)
+app.route("/api", rootRouter)
 
 connectDB();
 
 export default {
     port: process.env.PORT,
-    fetch: router.fetch
+    fetch: app.fetch
 };
