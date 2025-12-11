@@ -7,6 +7,7 @@ import { getPaymentStatus, getRandomStatus } from "../lib/utils";
 export const getCategories = async (c: Context) => {
   try {
     const allCategories = await Product.aggregate([
+      {$match: {category: {$ne: "Fitness & Outdoors"}}},
       { $group: { _id: "$category" } },
       { $sort: { _id: 1 } },
     ]);

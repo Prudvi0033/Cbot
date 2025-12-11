@@ -83,11 +83,11 @@ export const parseNlp = (text: string) => {
     "Books & Learning": ["book", "books", "learning"],
     Electronics: ["electronics", "electronic"],
     Fashion: ["fashion", "clothes", "dress", "shirts"],
-    "Fitness & Outdoors": ["fitness", "outdoors", "gym"],
+    // "Fitness & Outdoors": ["fitness", "outdoors", "gym", "sports", "sport", "outdoor"],
     "Home & Kitchen": ["home", "kitchen"],
     Laptops: ["laptop", "laptops"],
     Mobiles: ["mobile", "mobiles", "phone", "phones"],
-    "Sports & Outdoors": ["sports", "sport", "outdoor"],
+    "Sports & Outdoors": ["sports", "sport", "outdoor", "fitness", "outdoors", "gym"],
   };
 
   let category: string | null = null;
